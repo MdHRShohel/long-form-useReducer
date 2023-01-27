@@ -3,13 +3,12 @@ import { initialState, reducer } from "../state/formReducer";
 
 const LongForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [count, setCount] = React.useState(0);
 
   const submit = (event) => {
     event.preventDefault();
     console.log(state);
   };
-
+  
   return (
     <div className="h-screen w-screen flex justify-center items-center overflow-auto">
       <form
@@ -140,34 +139,47 @@ const LongForm = () => {
             <option value="graduate">Graduate</option>
           </select>
         </div>
-        <div className="flex flex-col w-full max-w-xs">
+        <div
+          name="quantity"
+          id="quantity"
+          className="flex flex-col w-full max-w-xs"
+        >
           <label className="mb-3">Number of PCs</label>
           <div className="flex justify-between items-center gap-2">
             <button
-              onClick={() => setCount(count - 1)}
-              disabled={count === 0}
+              onClick={() =>
+                dispatch({
+                  type: "DECREASE",
+                })
+              }
+              disabled={state.quantity === 0}
               className="bg-indigo-500 text-lg text-white rounded h-10 w-10 "
             >
               -
             </button>
             <div className="border flex-1 flex justify-center items-center h-10 rounded-md border-gray-300">
-              <span
-                className="text-lg"
+              <input
+                className="text-lg pl-[50%]"
+                type="number"
+                readOnly
                 name="quantity"
                 id="quantity"
-                onClick={(e) =>
+                value={state.quantity}
+                onChange={(e) =>
                   dispatch({
                     type: "INPUT",
                     payload: { name: e.target.name, value: e.target.value },
                   })
                 }
-              >
-                {count}
-              </span>
+              />
             </div>
             <button
-              onClick={() => setCount(count + 1)}
               className="bg-indigo-500 text-lg text-white rounded h-10 w-10"
+              onClick={() =>
+                dispatch({
+                  type: "INCREASE",
+                })
+              }
             >
               +
             </button>
